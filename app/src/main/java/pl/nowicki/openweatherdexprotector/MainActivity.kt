@@ -1,5 +1,6 @@
 package pl.nowicki.openweatherdexprotector
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -22,25 +23,41 @@ class MainActivity : AppCompatActivity() {
 
     val SERVER_URL = "https://api.openweathermap.org"
 
+    lateinit var viewModel: WeatherViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val weatherApiService = getForecastService(this);
+
+        val cities: MutableList<String> = mutableListOf("Katowice", "London", "Ulcinj")
+        var cityCounter = 0
+
         button.setOnClickListener {
-            val weatherCall = getForecast(this)
+            val city = cities.get(++cityCounter % 3)
+
+            val weatherCall = getForecast(weatherApiService, city)
             weatherCall.enqueue(object : Callback<WeatherRsp> {
                 override fun onFailure(call: Call<WeatherRsp>?, t: Throwable?) {
                     tv.text = "FAIL"
                 }
 
                 override fun onResponse(call: Call<WeatherRsp>?, response: Response<WeatherRsp>?) {
-                    tv.text = "SUCCESS"
+                    val sb = StringBuilder(response?.body()?.city!!.name.toString())
+                    sb.append(" ")
+                    sb.append(response.body()?.list!![0].main.temp.toString())
+                    tv.text = sb.toString()
                 }
             })
         }
     }
 
-    private fun getForecast(context: Context): Call<WeatherRsp> {
+    fun initModel() {
+        viewModel = ViewModelProviders.of(this).get(WeatherViewModel::class.java)
+    }
+
+    private fun getForecastService(context: Context): WeatherApiService {
 
         val cookieManager = CookieManager()
         cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL)
@@ -60,8 +77,11 @@ class MainActivity : AppCompatActivity() {
                 .client(okBuilder.build())
                 .build()
 
-        val weatherService = retrofit.create(WeatherApiService::class.java)
-        return weatherService.forecast()
+        return retrofit.create(WeatherApiService::class.java)
+    }
+
+    private fun getForecast(weatherService: WeatherApiService, city: String): Call<WeatherRsp> {
+        return weatherService.forecast(city)
     }
 
 }

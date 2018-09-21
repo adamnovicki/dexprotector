@@ -4,7 +4,7 @@
         <domain includeSubdomains="true">api.openweathermap.org</domain>
         <pin-set expiration="2028-01-01">
             <!-- OK -->
-            <!--<pin digest="SHA-256">0yOBPqOzhyp7U/418MLiLzURUneGendsdgs9G2+I2CA=</pin>-->
+            <pin digest="SHA-256">0yOBPqOzhyp7U/418MLiLzURUneGendsdgs9G2+I2CA=</pin>
             <!-- BAD -->
             <pin digest="SHA-256">7HIpactkIAq2Y49orFOOQKurWxmmSFZhBCoQYcRhJ3Y=</pin>
         </pin-set>

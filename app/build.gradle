@@ -4,8 +4,6 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-apply plugin: 'dexprotector'
-
 kotlin {
     experimental {
         coroutines "enable"
@@ -33,14 +31,9 @@ android {
     }
 
     buildTypes {
-        dexprotectorRelease {
-            //minifyEnabled true
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
-            // Path to the DexProtector’s configuration file
-            ext.set("dexprotector.configFile", "${projectDir}/dexprotector.xml")
-            // Use signature settings from buildtype release
-            signingConfig signingConfigs.release
-            //debuggable true
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }

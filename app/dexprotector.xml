@@ -10,11 +10,5 @@
     <integrityControl>
         <checkCertificate>off</checkCertificate>
     </integrityControl>
-
-    <publicKeyPinning src="res/xml/network_security_config.xml">
-        <trace>9</trace>
-        <actions>block, report</actions>
-        <cacheTTL>180</cacheTTL>
-    </publicKeyPinning>
 </dexprotector>
 

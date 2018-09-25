@@ -40,7 +40,7 @@ class WeatherViewModel : ViewModel(), CoroutineScope {
         for (selected in this) {
             city.value = selected
             loading.value = true
-            getTemperature(selected)
+            temperature.value = getTemperature(selected)
             loading.value = false
         }
     }
@@ -96,8 +96,8 @@ class WeatherViewModel : ViewModel(), CoroutineScope {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
         okBuilder.addNetworkInterceptor(logging)
-        okBuilder.readTimeout(60, TimeUnit.MILLISECONDS)
-        okBuilder.connectTimeout(60, TimeUnit.MILLISECONDS)
+        okBuilder.readTimeout(60*1000, TimeUnit.MILLISECONDS)
+        okBuilder.connectTimeout(60*1000, TimeUnit.MILLISECONDS)
 
         val retrofit = Retrofit.Builder()
                 .baseUrl(SERVER_URL)

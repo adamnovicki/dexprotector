@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         viewModel.temperature.observe {
+            Timber.d("temperature c: $it")
             tv.text = it.toString()
         }
     }
